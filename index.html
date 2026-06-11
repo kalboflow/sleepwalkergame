@@ -1,6 +1,5 @@
-<!-- TEST VERSION 999 -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Sleepwalker</title>
@@ -13,6 +12,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
     }
 
     canvas {
@@ -27,10 +27,12 @@
 <canvas id="game" width="800" height="600"></canvas>
 
 <script>
+console.log("Sleepwalker loaded");
+
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-// PLAYER
+// player
 let player = {
   x: 400,
   y: 300,
@@ -38,56 +40,49 @@ let player = {
   speed: 3
 };
 
-// INPUT
+// input
 let keys = {};
 
-document.addEventListener("keydown", (e) => {
+window.addEventListener("keydown", (e) => {
   keys[e.key] = true;
 });
 
-document.addEventListener("keyup", (e) => {
+window.addEventListener("keyup", (e) => {
   keys[e.key] = false;
 });
 
-// UPDATE
+// update
 function update() {
   if (keys["ArrowUp"]) player.y -= player.speed;
   if (keys["ArrowDown"]) player.y += player.speed;
   if (keys["ArrowLeft"]) player.x -= player.speed;
   if (keys["ArrowRight"]) player.x += player.speed;
 
-  // sienos
-  if (player.x < 0) player.x = 0;
-  if (player.y < 0) player.y = 0;
-
-  if (player.x + player.size > canvas.width)
-    player.x = canvas.width - player.size;
-
-  if (player.y + player.size > canvas.height)
-    player.y = canvas.height - player.size;
+  // boundaries
+  player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
+  player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
 }
 
-// DRAW (ROOM)
+// draw
 function draw() {
-  // tamsus kambarys
+  // background
   ctx.fillStyle = "#050505";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // kambario zona
-  ctx.fillStyle = "#0c0c0c";
-  ctx.fillRect(50, 50, canvas.width - 100, canvas.height - 100);
+  // room
+  ctx.fillStyle = "#0d0d0d";
+  ctx.fillRect(60, 60, 680, 480);
 
-  // sienos
   ctx.strokeStyle = "#333";
-  ctx.lineWidth = 4;
-  ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
+  ctx.lineWidth = 3;
+  ctx.strokeRect(60, 60, 680, 480);
 
   // player
   ctx.fillStyle = "white";
   ctx.fillRect(player.x, player.y, player.size, player.size);
 }
 
-// GAME LOOP
+// loop
 function loop() {
   update();
   draw();
