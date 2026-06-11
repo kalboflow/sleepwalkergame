@@ -24,6 +24,16 @@ function update() {
   if (keys["ArrowDown"]) player.y += player.speed;
   if (keys["ArrowLeft"]) player.x -= player.speed;
   if (keys["ArrowRight"]) player.x += player.speed;
+
+  // Sienos (screen bounds)
+  if (player.x < 0) player.x = 0;
+  if (player.y < 0) player.y = 0;
+
+  if (player.x + player.size > canvas.width)
+    player.x = canvas.width - player.size;
+
+  if (player.y + player.size > canvas.height)
+    player.y = canvas.height - player.size;
 }
 
 function draw() {
