@@ -1,29 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Sleepwalker</title>
-
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    canvas {
-      border: 2px solid white;
-    }
-  </style>
-</head>
-
-<body>
-
-<canvas id="game" width="800" height="600"></canvas>
-
 <script>
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -32,15 +6,25 @@ let player = {
   x: 400,
   y: 300,
   size: 20,
-  speed: 4
+  speed: 3
 };
 
+let keys = {};
+
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowUp") player.y -= player.speed;
-  if (e.key === "ArrowDown") player.y += player.speed;
-  if (e.key === "ArrowLeft") player.x -= player.speed;
-  if (e.key === "ArrowRight") player.x += player.speed;
+  keys[e.key] = true;
 });
+
+document.addEventListener("keyup", (e) => {
+  keys[e.key] = false;
+});
+
+function update() {
+  if (keys["ArrowUp"]) player.y -= player.speed;
+  if (keys["ArrowDown"]) player.y += player.speed;
+  if (keys["ArrowLeft"]) player.x -= player.speed;
+  if (keys["ArrowRight"]) player.x += player.speed;
+}
 
 function draw() {
   ctx.fillStyle = "black";
@@ -48,12 +32,13 @@ function draw() {
 
   ctx.fillStyle = "white";
   ctx.fillRect(player.x, player.y, player.size, player.size);
-
-  requestAnimationFrame(draw);
 }
 
-draw();
-</script>
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
 
-</body>
-</html>
+loop();
+</script>
