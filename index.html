@@ -66,21 +66,19 @@ function update() {
 }
 
 function draw() {
-  // grindys (kambarys)
-  ctx.fillStyle = "#0a0a0a";
+  // tamsus fonas
+  ctx.fillStyle = "#050505";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // „kambario rėmas“
-  ctx.strokeStyle = "#333";
+  // kambario zona
+  ctx.fillStyle = "#0c0c0c";
+  ctx.fillRect(50, 50, canvas.width - 100, canvas.height - 100);
+
+  // sienos (mirgantis efektas)
+  let flicker = Math.random() * 20;
+  ctx.strokeStyle = `rgb(${30 + flicker}, ${30 + flicker}, ${30 + flicker})`;
   ctx.lineWidth = 4;
   ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
-
-  // tamsesnis fonas už ribų (sienų jausmas)
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, canvas.width, 50);
-  ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
-  ctx.fillRect(0, 0, 50, canvas.height);
-  ctx.fillRect(canvas.width - 50, 0, 50, canvas.height);
 
   // player
   ctx.fillStyle = "white";
