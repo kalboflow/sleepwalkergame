@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>Sleepwalker</title>
@@ -27,12 +27,10 @@
 <canvas id="game" width="800" height="600"></canvas>
 
 <script>
-console.log("Sleepwalker loaded");
-
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-// player
+// PLAYER
 let player = {
   x: 400,
   y: 300,
@@ -40,7 +38,7 @@ let player = {
   speed: 3
 };
 
-// input
+// INPUT
 let keys = {};
 
 window.addEventListener("keydown", (e) => {
@@ -51,38 +49,47 @@ window.addEventListener("keyup", (e) => {
   keys[e.key] = false;
 });
 
-// update
+// UPDATE
 function update() {
   if (keys["ArrowUp"]) player.y -= player.speed;
   if (keys["ArrowDown"]) player.y += player.speed;
   if (keys["ArrowLeft"]) player.x -= player.speed;
   if (keys["ArrowRight"]) player.x += player.speed;
 
-  // boundaries
+  // sienos
   player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
   player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
 }
 
-// draw
+// DRAW
 function draw() {
+  // subtilus kamera shake
+  let shakeX = (Math.random() - 0.5) * 2;
+  let shakeY = (Math.random() - 0.5) * 2;
+
+  ctx.save();
+  ctx.translate(shakeX, shakeY);
+
   // background
-  ctx.fillStyle = "#050505";
+  ctx.fillStyle = "#030303";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // room
-  ctx.fillStyle = "#0d0d0d";
+  ctx.fillStyle = "#0b0b0b";
   ctx.fillRect(60, 60, 680, 480);
 
-  ctx.strokeStyle = "#333";
+  ctx.strokeStyle = "#2a2a2a";
   ctx.lineWidth = 3;
   ctx.strokeRect(60, 60, 680, 480);
 
   // player
   ctx.fillStyle = "white";
   ctx.fillRect(player.x, player.y, player.size, player.size);
+
+  ctx.restore();
 }
 
-// loop
+// LOOP
 function loop() {
   update();
   draw();
