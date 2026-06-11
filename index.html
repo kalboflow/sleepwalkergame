@@ -26,10 +26,11 @@
 <canvas id="game" width="800" height="600"></canvas>
 
 <script>
+console.log("GAME LOADED");
+
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-// PLAYER
 let player = {
   x: 400,
   y: 300,
@@ -37,7 +38,6 @@ let player = {
   speed: 3
 };
 
-// INPUT
 let keys = {};
 
 document.addEventListener("keydown", (e) => {
@@ -48,14 +48,13 @@ document.addEventListener("keyup", (e) => {
   keys[e.key] = false;
 });
 
-// UPDATE
 function update() {
   if (keys["ArrowUp"]) player.y -= player.speed;
   if (keys["ArrowDown"]) player.y += player.speed;
   if (keys["ArrowLeft"]) player.x -= player.speed;
   if (keys["ArrowRight"]) player.x += player.speed;
 
-  // WALLS (sienos)
+  // sienos
   if (player.x < 0) player.x = 0;
   if (player.y < 0) player.y = 0;
 
@@ -66,17 +65,14 @@ function update() {
     player.y = canvas.height - player.size;
 }
 
-// DRAW
 function draw() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // player
   ctx.fillStyle = "white";
   ctx.fillRect(player.x, player.y, player.size, player.size);
 }
 
-// LOOP
 function loop() {
   update();
   draw();
