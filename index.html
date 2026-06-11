@@ -41,7 +41,14 @@ let player = {
 };
 
 let keys = {};
+let currentRoom = 1;
 
+const door = {
+  x: 710,
+  y: 250,
+  width: 30,
+  height: 100
+};
 window.addEventListener("keydown", (e) => keys[e.key] = true);
 window.addEventListener("keyup", (e) => keys[e.key] = false);
 
