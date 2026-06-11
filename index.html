@@ -25,7 +25,7 @@ function update() {
   if (keys["ArrowLeft"]) player.x -= player.speed;
   if (keys["ArrowRight"]) player.x += player.speed;
 
-  // Sienos (screen bounds)
+  // sienos
   if (player.x < 0) player.x = 0;
   if (player.y < 0) player.y = 0;
 
@@ -35,7 +35,6 @@ function update() {
   if (player.y + player.size > canvas.height)
     player.y = canvas.height - player.size;
 }
-
 function draw() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
