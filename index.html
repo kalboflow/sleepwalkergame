@@ -13,11 +13,12 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
+      font-family: Arial;
     }
 
     canvas {
       background: #000;
-      border: 2px solid #444;
+      border: 2px solid #333;
     }
   </style>
 </head>
@@ -30,24 +31,19 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-// PLAYER
+// PLAYER (sleepwalker)
 let player = {
   x: 400,
   y: 300,
-  size: 20,
+  w: 18,
+  h: 28,
   speed: 3
 };
 
-// INPUT
 let keys = {};
 
-window.addEventListener("keydown", (e) => {
-  keys[e.key] = true;
-});
-
-window.addEventListener("keyup", (e) => {
-  keys[e.key] = false;
-});
+window.addEventListener("keydown", (e) => keys[e.key] = true);
+window.addEventListener("keyup", (e) => keys[e.key] = false);
 
 // UPDATE
 function update() {
@@ -57,36 +53,59 @@ function update() {
   if (keys["ArrowRight"]) player.x += player.speed;
 
   // sienos
-  player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
-  player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
+  player.x = Math.max(60, Math.min(740 - player.w, player.x));
+  player.y = Math.max(60, Math.min(540 - player.h, player.y));
 }
 
 // DRAW
 function draw() {
-  // subtilus kamera shake
-  let shakeX = (Math.random() - 0.5) * 2;
-  let shakeY = (Math.random() - 0.5) * 2;
-
-  ctx.save();
-  ctx.translate(shakeX, shakeY);
-
   // background
-  ctx.fillStyle = "#030303";
+  ctx.fillStyle = "#050505";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // room
-  ctx.fillStyle = "#0b0b0b";
+  // kambarys
+  ctx.fillStyle = "#0c0c0c";
   ctx.fillRect(60, 60, 680, 480);
 
-  ctx.strokeStyle = "#2a2a2a";
-  ctx.lineWidth = 3;
+  // grindų „grid“
+  ctx.strokeStyle = "#111";
+  for (let x = 60; x < 740; x += 20) {
+    ctx.beginPath();
+    ctx.moveTo(x, 60);
+    ctx.lineTo(x, 540);
+    ctx.stroke();
+  }
+  for (let y = 60; y < 540; y += 20) {
+    ctx.beginPath();
+    ctx.moveTo(60, y);
+    ctx.lineTo(740, y);
+    ctx.stroke();
+  }
+
+  // sienos
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 4;
   ctx.strokeRect(60, 60, 680, 480);
 
-  // player
+  // PLAYER (sleepwalker žmogus)
   ctx.fillStyle = "white";
-  ctx.fillRect(player.x, player.y, player.size, player.size);
 
-  ctx.restore();
+  // galva
+  ctx.beginPath();
+  ctx.arc(player.x + 9, player.y + 8, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  // kūnas
+  ctx.fillRect(player.x + 7, player.y + 14, 4, 10);
+
+  // kojos
+  ctx.beginPath();
+  ctx.moveTo(player.x + 7, player.y + 24);
+  ctx.lineTo(player.x + 3, player.y + 32);
+  ctx.moveTo(player.x + 11, player.y + 24);
+  ctx.lineTo(player.x + 15, player.y + 32);
+  ctx.strokeStyle = "white";
+  ctx.stroke();
 }
 
 // LOOP
